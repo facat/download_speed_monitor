@@ -57,3 +57,7 @@ docs/_build/
 target/
 
 .idea
+bin
+lib
+include
+pyvenv.cfg

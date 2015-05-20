@@ -1,7 +1,8 @@
 
 import logging
 logging.basicConfig(level=logging.INFO)
-import unit_test
+#import unit_test
+from orm import model
 
 if __name__=='__main__':
 
