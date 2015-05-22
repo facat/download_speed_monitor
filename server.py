@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_restful import Resource, Api, reqparse
 from orm import crud
 import logging
@@ -25,8 +25,14 @@ class VPSSpeedTestResult(Resource):
         for r in result:
             ret.append({'speed':r['speed'],'monitorTime':r['monitorTime'].strftime('%Y-%m-%d %H:%M:%S %z')})
         return ret
+@app.route('/')
+def index():
+    return send_from_directory('./html','index.html')
+@app.route('/js/<string:jsfile>')
+def js(jsfile):
+    return send_from_directory('./html/js',jsfile)
 
 api.add_resource(VPSSpeedTestResult, '/vps')
 
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0',port=6000)
+    app.run(debug=True,host='0.0.0.0',port=5100)
