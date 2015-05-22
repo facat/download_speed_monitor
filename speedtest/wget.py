@@ -10,7 +10,7 @@ class wget:
         self.total = 0
         self.size = 0
         self.averageSpeed=0#KB/s
-    def download(self, url,lastingTime=2, headers = {}):
+    def download(self, url,lastingTime=3, headers = {}):
         self.finished=False
         block = self.config['block']
         size = self.size
