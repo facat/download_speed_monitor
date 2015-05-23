@@ -19,15 +19,20 @@ myapp.controller("VpsSpeedTestResult", function($rootScope,$scope,$http){
     $http.post('vpstest',{'uri':_url,'hours':24}).success(function(data) {
     labels=new Array();
     speed=new Array();
+    var speedAdd=0;
+    var averageArray=new Array();
     reversedData=data.reverse();
     for(var i=0;i<reversedData.length;i++)
     {
       labels.push(reversedData[i]['monitorTime']);
       speed.push(reversedData[i]['speed']);
+      speedAdd+=reversedData[i]['speed'];
+      averageArray.push(speedAdd/(i+1));
+
     }
       $scope.labels=labels;
-      $scope.data =[speed];
-      $scope.series =[name];
+      $scope.data =[speed,averageArray];
+      $scope.series =[name,'average'];
     }
     );
   }
