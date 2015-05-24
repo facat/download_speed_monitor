@@ -1,15 +1,22 @@
 var myapp = angular.module("app", ['chart.js']);
 
 myapp.controller("VpsSpeedTestResult", function($rootScope,$scope,$http){
+  $scope.options={scaleOverride : true,
+          scaleSteps : 6,
+          scaleStepWidth : 50,
+          scaleStartValue : 0,};
   var update=function(url)
   {
+    var name=url.name;
+    var _url=url.url;
     if(url==undefined)
     {
       return;
     }
     $scope.labels=null;
     $scope.data=null;
-    $http.post('vpstest',{'uri':url,'hours':24}).success(function(data) {
+    $scope.series =null;
+    $http.post('vpstest',{'uri':_url,'hours':24}).success(function(data) {
     labels=new Array();
     speed=new Array();
     reversedData=data.reverse();
@@ -20,7 +27,7 @@ myapp.controller("VpsSpeedTestResult", function($rootScope,$scope,$http){
     }
       $scope.labels=labels;
       $scope.data =[speed];
-      $scope.url=url;
+      $scope.series =[name];
     }
     );
   }
@@ -37,7 +44,7 @@ myapp.controller('VpsUrlList',function ($rootScope,$scope,$http) {
  $http.post('vpsurllist').success(function(data) {
     $scope.urls = data;
   });
-  $scope.click=function(url){
+  $scope.click=function(url,name){
   $rootScope.$emit('update',url);
  }
 

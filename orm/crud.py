@@ -1,7 +1,7 @@
 from orm import conn
 from orm import model
 import datetime
-
+import logging
 from sqlalchemy.orm import sessionmaker,scoped_session
 Session=scoped_session(sessionmaker(bind=conn.engine))
 
@@ -16,11 +16,12 @@ def getLatestResultHoursAgo(url,hours):#获得最近更新时间之前n个小时
     latestTime=latest.monitorTime
     fromTime=latestTime-datetime.timedelta(hours=hours)
     toTime=latestTime
+    # logging.info('totime %s'%(str(toTime)))
     return getVPSResultFromTo(url,fromTime,toTime)
 
 def getVPSUrlList():
-    query=Session.query(model.VPSSpeed.url).distinct()
-    return [x[-1] for x in query]
+    query=Session.query(model.VPSSpeed.url,model.VPSSpeed.name).distinct()
+    return [{'url':x[0],'name':x[1]} for x in query]
 
 def addVPSResult(name,url,speed,monitorTime):
     entry=model.VPSSpeed(name=name,url=url,speed=speed,monitorTime=monitorTime)
@@ -31,8 +32,10 @@ def getVPSResultFromTo(url,fromTime,toTime,desc=True):
     if desc:
         query=Session.query(model.VPSSpeed).filter(model.VPSSpeed.url==url).filter( (model.VPSSpeed.monitorTime>=fromTime) & (model.VPSSpeed.monitorTime<=toTime)).order_by(model.VPSSpeed.monitorTime.desc())
     else:
-        query=Session.query(model.VPSSpeed).filter(model.VPSSpeed.url==url).filter((model.VPSSpeed.monitorTime>=fromTime) & (VPSSpeed.monitorTime<=toTime)).order_by(model.VPSSpeed.monitorTime.asc())
+        query=Session.query(model.VPSSpeed).filter(model.VPSSpeed.url==url).filter((model.VPSSpeed.monitorTime>=fromTime) & (model.VPSSpeed.monitorTime<=toTime)).order_by(model.VPSSpeed.monitorTime.asc())
     ret=[]
     for q in query:
         ret.append({'url':q.url,'name':q.name,'speed':q.speed,'monitorTime':q.monitorTime})
     return ret
+def removeSession():
+    Session.remove()

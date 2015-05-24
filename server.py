@@ -21,10 +21,8 @@ class VPSSpeedTestResult(Resource):
             uri=''
             hours=0
         result=crud.getLatestResultHoursAgo(uri,hours)
-        logging.info('url %s'%uri)
         ret=[]
         for r in result:
-            logging.info('speed %s'%r['speed'])
             ret.append({'speed':r['speed'],'monitorTime':r['monitorTime'].strftime('%Y-%m-%d %H:%M:%S %z')})
 
         return ret
@@ -42,6 +40,12 @@ def js(jsfile):
 @app.route('/css/<string:cssfile>')
 def css(cssfile):
     return send_from_directory('./html/css',cssfile)
+
+@app.teardown_request
+def removeSession(err):
+    if err:
+        logging.critical('error when request torn down %s'%(str(err)))
+    crud.removeSession()
 
 api.add_resource(VPSSpeedTestResult, '/vpstest')
 api.add_resource(VPSUrlList, '/vpsurllist')
