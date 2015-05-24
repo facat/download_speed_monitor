@@ -18,6 +18,9 @@ def getLatestResultHoursAgo(url,hours):#获得最近更新时间之前n个小时
     toTime=latestTime
     return getVPSResultFromTo(url,fromTime,toTime)
 
+def getVPSUrlList():
+    query=Session.query(model.VPSSpeed.url).distinct()
+    return [x[-1] for x in query]
 
 def addVPSResult(name,url,speed,monitorTime):
     entry=model.VPSSpeed(name=name,url=url,speed=speed,monitorTime=monitorTime)
@@ -26,9 +29,9 @@ def addVPSResult(name,url,speed,monitorTime):
 
 def getVPSResultFromTo(url,fromTime,toTime,desc=True):
     if desc:
-        query=Session.query(model.VPSSpeed).filter( (model.VPSSpeed.monitorTime>=fromTime) & (model.VPSSpeed.monitorTime<=toTime)).order_by(model.VPSSpeed.monitorTime.desc())
+        query=Session.query(model.VPSSpeed).filter(model.VPSSpeed.url==url).filter( (model.VPSSpeed.monitorTime>=fromTime) & (model.VPSSpeed.monitorTime<=toTime)).order_by(model.VPSSpeed.monitorTime.desc())
     else:
-        query=Session.query(model.VPSSpeed).filter((model.VPSSpeed.monitorTime>=fromTime) & (VPSSpeed.monitorTime<=toTime)).order_by(model.VPSSpeed.monitorTime.asc())
+        query=Session.query(model.VPSSpeed).filter(model.VPSSpeed.url==url).filter((model.VPSSpeed.monitorTime>=fromTime) & (VPSSpeed.monitorTime<=toTime)).order_by(model.VPSSpeed.monitorTime.asc())
     ret=[]
     for q in query:
         ret.append({'url':q.url,'name':q.name,'speed':q.speed,'monitorTime':q.monitorTime})

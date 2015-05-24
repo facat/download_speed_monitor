@@ -18,21 +18,33 @@ class VPSSpeedTestResult(Resource):
             uri=args['uri']
             hours=args['hours']
         except Exception as e:
-            url=''
+            uri=''
             hours=0
         result=crud.getLatestResultHoursAgo(uri,hours)
+        logging.info('url %s'%uri)
         ret=[]
         for r in result:
+            logging.info('speed %s'%r['speed'])
             ret.append({'speed':r['speed'],'monitorTime':r['monitorTime'].strftime('%Y-%m-%d %H:%M:%S %z')})
+
         return ret
+
+class VPSUrlList(Resource):
+    def post(self):
+        return crud.getVPSUrlList()
+
 @app.route('/')
 def index():
     return send_from_directory('./html','index.html')
 @app.route('/js/<string:jsfile>')
 def js(jsfile):
     return send_from_directory('./html/js',jsfile)
+@app.route('/css/<string:cssfile>')
+def css(cssfile):
+    return send_from_directory('./html/css',cssfile)
 
-api.add_resource(VPSSpeedTestResult, '/vps')
+api.add_resource(VPSSpeedTestResult, '/vpstest')
+api.add_resource(VPSUrlList, '/vpsurllist')
 
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0',port=5100)

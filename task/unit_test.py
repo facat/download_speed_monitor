@@ -25,6 +25,8 @@ for u in vpsTest.result():
 	for c in crud.getLatestResultHoursAgo(u['url'],6):
 		logging.info('latest 6 hours ago %s %d'%(u['url'],c['speed']))
 
+for c in crud.getVPSUrlList():
+	logging.info(c)
 
 
 logging.info('task unit test passed.')
