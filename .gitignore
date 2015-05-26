@@ -63,3 +63,4 @@ include
 pyvenv.cfg
 run.sh
 restful_unit_test.py
+pip-selfcheck.json
