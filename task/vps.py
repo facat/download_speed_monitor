@@ -1,14 +1,17 @@
 __author__ = 'dmy'
 
 from speedtest.wget import wget
+from orm import crud
 
 class VPSSpeedTest():
     def __init__(self):
-        self._url=[]
+        self._url=None
         pass
-    def add(self,name,url):
-        self._url.append({'url':url,'name':name})
+    def _generateUrls(self):
+        return crud.getVPSUrlList()
     def start(self):
+        urls=self._generateUrls()
+        self._url=urls
         for u in self._url:
             w=wget()
             w.download(u['url'])

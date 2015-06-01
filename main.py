@@ -34,9 +34,7 @@ if __name__=='__main__':
     ]
     now=datetime.datetime.now()
     vpsTest=VPSSpeedTest()
-    for t in taskList:
-        vpsTest.add(t['name'],t['url'])
     vpsTest.start()
     for r in vpsTest.result():
-        addVPSResult(r['name'],r['url'],r['speed'],now)
+        addVPSResult(r['url'],r['speed'],now)
     logging.info('Finished.')

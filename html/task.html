@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html ng-app='app'>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>VPS Speed Test</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport"
+        content="width=device-widht, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <link rel="alternate icon" type="image/png" href="assets/i/favicon.png">
+  <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.3.0/css/amazeui.min.css"/>
+  <link rel="stylesheet" href="css/angular-chart.css">
+  <style>
+    @media only screen and (min-width: 1200px) {
+      .blog-g-fixed {
+        max-width: 1200px;
+      }
+    }
+
+    @media only screen and (min-width: 641px) {
+      .blog-sidebar {
+        font-size: 1.4rem;
+      }
+    }
+
+    .blog-main {
+      padding: 20px 0;
+    }
+
+    .blog-title {
+      margin: 10px 0 20px 0;
+    }
+
+    .blog-meta {
+      font-size: 14px;
+      margin: 10px 0 20px 0;
+      color: #222;
+    }
+
+    .blog-meta a {
+      color: #27ae60;
+    }
+
+    .blog-pagination a {
+      font-size: 1.4rem;
+    }
+
+    .blog-team li {
+      padding: 4px;
+    }
+
+    .blog-team img {
+      margin-bottom: 0;
+    }
+
+    .blog-content img,
+    .blog-team img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .blog-footer {
+      padding: 10px 0;
+      text-align: center;
+    }
+    .url:hover{
+      color: DarkOrchid;
+    }
+    .vps-name{
+      width:100%;
+    }
+    .vps-url{
+      width:100%;
+    }
+    .alert-holder{
+    	position: absolute;
+    	margin-top: -20px;
+    	background-color: gray;
+    	border-radius:15px;
+    	padding-left:10px;
+    	padding-right:10px;
+    }
+  </style>
+</head>
+<body >
+<header class="am-topbar">
+  <h1 class="am-topbar-brand">
+    <a href="#">关于</a>
+  </h1>
+
+  
+</header>
+<div class='alert-holder'></div>
+<div class="am-g am-g-fixed blog-g-fixed" >
+  <div class="am-u-md-12">
+    <div >
+      <button type="button" class="am-btn am-btn-primary ">Add</button>  
+    </div>
+    <div ng-controller="VpsUrlList">
+      <div class="am-u-md-3">
+        
+        <input type='text' class='vps-name' ng-repeat="url in urls" value='{{url.name}}' readonly="true" ng-dblclick='doubleClickEdit($event)'  ng-blur='doneEdit($event,url)'>
+      </div>
+      <div class="am-u-md-8">
+        <input type='text' class='vps-url' ng-repeat="url in urls" value='{{url.url}}' readonly="true">
+      </div>
+      <div class="am-u-md-1">
+        <button type="button" class="am-btn am-btn-primary " ng-repeat="url in urls">Remove</button>  
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+<footer class="blog-footer">
+  <p>VPS Speed Test<br/>
+    <small>© Copyright facat. Powered by the AmazeUI.</small>
+  </p>
+</footer>
+
+<!--[if lt IE 9]>
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="assets/js/polyfill/rem.min.js"></script>
+<script src="assets/js/polyfill/respond.min.js"></script>
+<script src="assets/js/amazeui.legacy.js"></script>
+<![endif]-->
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://cdn.amazeui.org/amazeui/2.3.0/js/amazeui.min.js"></script>
+<script type="text/javascript" src='http://libs.useso.com/js/angular.js/1.2.9/angular.min.js'></script>
+<script type="text/javascript" src='http://cdn.staticfile.org/Chart.js/1.0.1-beta.2/Chart.min.js'></script>
+<script type="text/javascript" src='js/angular-chart.min.js'></script>
+<script type="text/javascript" src='js/control.js'></script>
+
+
+<!--<![endif]-->
+
+</body>
+</html>

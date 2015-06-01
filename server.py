@@ -30,8 +30,27 @@ class VPSSpeedTestResult(Resource):
 class VPSUrlList(Resource):
     def post(self):
         return crud.getVPSUrlList()
+class ModifyVPSUrlList(Resource):
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('uri', type=str)
+        parser.add_argument('name', type=str)
+        args = parser.parse_args()
+        try:
+            uri=args['uri']
+            name=args['name']
+            crud.changeNameByUrl(uri,name)
+            return {'status':'ok'}
+        except Exception as e:
+            logging.critical(str(e))
+            return {'status','error'}
 
 @app.route('/')
+def index():
+    return send_from_directory('./html','index.html')
+@app.route('/<string:file>')
+def root(file):
+    return send_from_directory('./html',file)
 def index():
     return send_from_directory('./html','index.html')
 @app.route('/js/<string:jsfile>')
@@ -49,6 +68,8 @@ def removeSession(err):
 
 api.add_resource(VPSSpeedTestResult, '/vpstest')
 api.add_resource(VPSUrlList, '/vpsurllist')
+api.add_resource(ModifyVPSUrlList, '/modifyvpsname')
+
 
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0',port=5100)

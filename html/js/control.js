@@ -2,7 +2,7 @@ var myapp = angular.module("app", ['chart.js']);
 
 myapp.controller("VpsSpeedTestResult", function($rootScope,$scope,$http){
   $scope.options={scaleOverride : true,
-          scaleSteps : 6,
+          scaleSteps : 10,
           scaleStepWidth : 50,
           scaleStartValue : 0,};
   var update=function(url)
@@ -51,6 +51,16 @@ myapp.controller('VpsUrlList',function ($rootScope,$scope,$http) {
   });
   $scope.click=function(url,name){
   $rootScope.$emit('update',url);
+ }
+ $scope.doubleClickEdit=function  ($event) {
+ 	$event.target.readOnly=false;
+ }
+ $scope.doneEdit=function($event,url){
+  var newValue=$event.target.value;
+  $http.post('modifyvpsname',{'uri':url.url,'name':newValue}).success(function(){
+    $('.alert-holder').html('URL已成功更新').fadeIn(300).delay(3000).fadeOut(2000);  
+  });
+  
  }
 
 });
